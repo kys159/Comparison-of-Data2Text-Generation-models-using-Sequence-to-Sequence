@@ -1,7 +1,7 @@
 # Data2Text-Generation
 
 Liu et al.,(2018)'s model (Structure aware Seq2Seq) is structured in tensorflow1 and There is no version configured with pytorch. In addition, with the recent rapid growth of Graphic cards, it is necessary to release the code for the new version of tensorflow2 and pytorch using CUDA11.
-
+This repository contains the contents of https://github.com/tyliupku/wiki2bio and contains code that was reimplemented using pytorch.
 
 ### 1. Requirements
 ~~~
