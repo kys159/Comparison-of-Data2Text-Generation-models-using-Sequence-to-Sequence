@@ -13,11 +13,11 @@ pip install "numpy<1.17"
 sklearn
 ~~~
 ### 2. Data
-1) This study was conducted using WIKIBIO dataset. (https://github.com/tyliupku/wiki2bio)
+This study was conducted using WIKIBIO dataset. (https://github.com/tyliupku/wiki2bio)
 
 ![example](https://user-images.githubusercontent.com/61648914/170856147-916bac53-0ce7-4970-abb4-80dcce8fe186.png)
 
-2) Preprocess
+2) Paper
 ~~~
 python mypreprocess.py
 ~~~
