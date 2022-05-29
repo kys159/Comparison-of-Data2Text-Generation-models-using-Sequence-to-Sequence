@@ -1,0 +1,30 @@
+{   
+    "experiment_name": "Dual_attention_copy",
+    "hidden_size": 500,
+    "emb_size": 400,
+    "field_size": 50,
+    "pos_size": 5,
+    "batch_size": 4,
+    "epochs": 50,
+    "source_vocab": 2150,
+    "field_vocab": 20,
+    "position_vocab": 31,
+    "target_vocab": 2150,
+
+    "report": 500,
+    "learning_rate": 0.0005,
+
+    "mode": "train",
+    "load": "0",
+    "dir": "processed_data",
+    "limits": 0,
+
+    "dual_attention": "True",
+    "fgate_encoder": "True",
+
+    "field": "True",
+    "position": "True",
+    "encoder_pos": "True",
+    "decoder_pos": "True",
+    "pointer":"True"
+}
