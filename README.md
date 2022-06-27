@@ -24,7 +24,12 @@ Comparison of Data2Text Generation models using Sequence-to-Sequence (Young-Seok
 
 ![figure_copy](https://user-images.githubusercontent.com/61648914/170856709-49182dff-e5da-4e25-b838-1eb8b9adc903.png)
 
-## 4. Result
+## 4. Train
+~~~
+python Main.py arguments.json
+~~~
+
+## 5. Result
 
 ### BLEU-4 and Rouge-4-F1 for structure-aware seq2seq model(Liu et al., 2018) and Model with Copy mechanism 
 ![copy_score](https://user-images.githubusercontent.com/61648914/170856775-abd4de69-c41b-4d21-94af-d182ef1be49b.PNG)
