@@ -5,13 +5,6 @@ import torch.nn.functional as F
 import math
 import numpy as np
 
-'''
-1. sequnit에 padding idx 확인 필요 -> 0으로 수정했고, vocab에서 pad, sos, eos 확인 필요
-2. sequnit에 embedding sparse로 해야할지도?
-3. attention 부터 진행해야됨. linear layer로 수정하고, dimension 확인. 각각 linear layer 객체 지정해야됨.
-'''
-
-
 def init_wt_normal(wt):
     wt.weight.data.normal_(std=1e-4)
 
@@ -256,8 +249,6 @@ class SeqUnit(nn.Module):
         self.max_length = max_length
         self.device = torch.device('cuda')
         
-        #self.log_softmax = torch.nn.LogSoftmax(dim=2)
-
         if self.fgate_enc:
             print("Field-gate is used")
             self.enc_lstm = fgateLstmUnit(self.hidden_size, self.uni_size, self.field_encoder_size)
@@ -300,8 +291,6 @@ class SeqUnit(nn.Module):
         
         inputs_embedding = self.enc_embedding(inputs)
         
-        #enc_batch_indicies = enc_batch_indicies.unsqueeze(2).repeat(1,1,dec_inp.size(1))
-        
         if self.field_concat:
             inputs_embedding = torch.cat([self.enc_embedding(inputs),
                                             self.field_embedding(fields)], 2)
@@ -330,9 +319,6 @@ class SeqUnit(nn.Module):
         else:
             loss_output = torch.zeros([self.batch_size,dec_inp.size(1),self.target_vocab], device = self.device)
             
-        #att = torch.empty([self.batch_size, len(inputs[0]), 0], device = self.device)
-        # cov_att = torch.zeros(self.batch_size, inputs.size(1), 1, device = self.device)
-        # covloss = 0.0
         tot_pcopy = torch.zeros(self.batch_size, dec_inp.size(1))
         for i in range(dec_inp.size(1)):
             de_outputs, de_state = self.dec_lstm(self.enc_embedding(dec_inp[:,i]).unsqueeze(1), en_state)
@@ -355,25 +341,13 @@ class SeqUnit(nn.Module):
                 
                 loss_output[:,i] = extend_vocab.squeeze(1)
                 tot_pcopy[:,i] = pcopy.squeeze()
-                # loss_output[:,i,:self.target_vocab] = torch.mul(output, pgen)
-                # enc_batch_att = torch.mul(atts, (1-pgen).permute(0,2,1))
-                # loss_output[:,i,:] = loss_output[:,i,:].scatter_add_(1, enc_batch_indicies, enc_batch_att[:,:,i])
-                
-                # this_covloss = torch.sum(torch.min(atts, cov_att).squeeze(2), dim =1)
-                # covloss += torch.sum(this_covloss)
-                
-                #cov_att = coverage
-            
-                # cov_att += atts
                 
             else:
                 output = self.dec_out(de_outputs)
-                #loss_output = torch.cat([loss_output, output], dim = 1)
                 loss_output[:,i] = output.squeeze(1)
             
             en_state = de_state
 
-        #return loss_output, covloss
         return loss_output, tot_pcopy
         
     def generate(self, inputs, fields, pos, rpos, enc_batch_indicies):
@@ -429,14 +403,11 @@ class SeqUnit(nn.Module):
                 outputs = torch.where(output >= self.target_vocab, 3, output).view(self.batch_size,-1)
                 g_tokens = torch.cat([g_tokens,output.view(self.batch_size,-1)], dim = 1)
                 
-                #cov_att = coverage
             else:
                 output = self.dec_out(de_outputs)
-                #loss_output = torch.cat([loss_output, output], dim = 1)
                 outputs = torch.argmax(output.squeeze(1), dim = 1).view(self.batch_size, -1)
                 g_tokens = torch.cat([g_tokens,outputs.view(self.batch_size,-1)], dim = 1)
             
             en_state = de_state
         
-#        return g_tokens, loss_output, att
         return g_tokens, att

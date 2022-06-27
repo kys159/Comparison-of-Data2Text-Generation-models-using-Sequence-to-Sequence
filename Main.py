@@ -13,17 +13,6 @@ def main(config_file):
     params = json.load(open(config_file, 'rb'))
     params['experiment_name'] = params['experiment_name']
     
-    # def neptune_init():
-    #         print('\nLogging on ... ', end='')
-    #         neptune.init()
-    #         neptune.create_experiment(params={'learning_rate' : params["learning_rate"],
-    #                                           'dual attention' : params["dual_attention"],
-    #                                           'fgate encoder' : params["fgate_encoder"],
-    #                                           'copy mechanism' : params["pointer"]
-    #                                           })
-        
-    #neptune_init()
-    
     print("Training models with params:")
     print(json.dumps(params, separators=("\n", ": "), indent=4))
     if params['mode'] == 'train': # train is contain valid
@@ -32,8 +21,6 @@ def main(config_file):
     else :
         tester = Trainer(params)
         tester.test()
-
-    #neptune.stop()
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
