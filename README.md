@@ -24,7 +24,8 @@ Comparison of Data2Text Generation models using Sequence-to-Sequence (Young-Seok
 
 ![figure_copy](https://user-images.githubusercontent.com/61648914/170856709-49182dff-e5da-4e25-b838-1eb8b9adc903.png)
 
-## 4. Train
+## 4. Train / Test
+If you want to test, change mode to test at arguments.
 ~~~
 python Main.py arguments.json
 ~~~
